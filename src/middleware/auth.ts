@@ -5,11 +5,12 @@ export const requireAdminToken = (
   res: Response,
   next: NextFunction
 ) => {
+  const isDev = process.env.NODE_ENV === "development";
   const token = req.header("x-admin-token");
 
-  if (!token || token !== process.env.ADMIN_TOKEN) {
-    return res.status(403).json({ error: "Forbidden: Admin token required" });
+  if (isDev && token === process.env.ADMIN_TOKEN) {
+    return next();
   }
 
-  next();
+  return res.status(403).json({ error: "Forbidden" });
 };
