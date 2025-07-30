@@ -14,6 +14,19 @@ export const createScene = async (req: Request, res: Response) => {
   }
 };
 
+export const getAllScenes = async (req: Request, res: Response) => {
+  try {
+    const scenes = await SceneModel.find().select("_id text");
+    res.json(scenes);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Unknown error occurred" });
+    }
+  }
+};
+
 export const getSceneById = async (req: Request, res: Response) => {
   try {
     const scene = await SceneModel.findById(req.params.id).populate(
