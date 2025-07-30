@@ -52,26 +52,3 @@ export const updateScene = async (req: Request, res: Response) => {
     }
   }
 };
-
-export const updateScenePartial = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-
-    const updatedScene = await SceneModel.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!updatedScene) {
-      return res.status(404).json({ error: "Scene not found" });
-    }
-
-    res.json(updatedScene);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Unknown error occurred" });
-    }
-  }
-};
